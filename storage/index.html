@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
+    <script>
+     // Initialize Firebase
+     // your config here
+    firebase.initializeApp(config);
+    </script>
+</head>
+<body>
+    <input type="file" id="fileUpload"/>
+    
+    <button class="upload" id="btnUpload">Upload</button>
+    <button id="btnGet">Get Image</button>
+    
+    <script>
+        document.querySelector('#btnUpload').addEventListener('click',() => {
+            let ref = firebase.storage().ref('photos').child('john.jpg');
+            ref.put(document.querySelector('#fileUpload').files[0]).then((snapshot)=>{
+                alert('file uploaded');
+            });
+        });
+
+        document.querySelector('#btnGet').addEventListener('click',() => {
+         firebase.storage().ref('photos/john.jpg').getDownloadURL().then((url)=>{
+           let img = new Image();
+           img.src = url;
+           img.height = 100;
+           document.body.appendChild(img);
+         });
+        });
+    </script>
+</body>
+</html>

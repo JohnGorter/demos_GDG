@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+     // Initialize Firebase
+    // your config here
+    firebase.initializeApp(config);
+    </script>
+
+</head>
+<body>
+    <button id="login">Login</button><span id="user"></span>
+    <button id="logout">Logout</button>
+    <script>
+        document.querySelector('#login').addEventListener('click',() => {
+            firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((user) => {
+             console.log("user authenticated", user)
+             document.querySelector('#user').innerHTML = user.user.displayName;
+            }); 
+        })
+
+     document.querySelector('#logout').addEventListener('click',() => {
+        firebase.auth().signOut(); 
+     });
+
+     firebase.auth().onAuthStateChanged((user)=>{
+         console.log("user", user);
+         if (!user)
+            document.querySelector('#user').innerHTML = "";
+     })
+   
+    </script>
+    
+</body>
+</html>

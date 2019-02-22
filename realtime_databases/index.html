@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    // your config here
+
+    </script>
+</head>
+<body>
+    <div id="content"></div>
+    <input type="text" id="txtChat" />
+    <button id="btnSay">say!</button>
+    <script>
+    firebase.database().ref("chats").on('value', (snapshot) => {
+        document.querySelector('#content').innerHTML = "";
+        let data = Object.values(snapshot.val());
+       for (let c of data ){
+            document.querySelector('#content').innerHTML += `<div>${c.chat}</div>`;
+       }
+    }); 
+    document.querySelector('#btnSay').addEventListener('click',() => {
+       firebase.database().ref("chats").push({
+           chat:document.querySelector("#txtChat").value
+        }) 
+    });
+
+   var presenceRef = firebase.database().ref('disconnectmessage');
+   presenceRef.set('John connected');
+   presenceRef.onDisconnect().set('John disconnected!');
+
+
+   var connectedRef = firebase.database().ref('.info/connected'); // <- special value
+   connectedRef.on('value', function(snap) {
+     alert(snap.val() === true ? 'connected to the database now!':'not connected to the database');
+   });
+
+    </script>
+</body>
+</html>
